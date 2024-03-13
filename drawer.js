@@ -24,6 +24,15 @@ function showTimeTable() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  const userEmail = localStorage.getItem('userEmail');
+  
+  // Check if userEmail is not found
+  if (!userEmail) {
+    // Redirect user to index.html
+    window.location.href = 'index.html';
+    return; // Stop further execution
+  }
+
   // Attach click event listener to the time table link
   const timeTableLink = document.getElementById('timetable-link');
   timeTableLink.addEventListener('click', function(event) {
@@ -87,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error updating user IP address:', error);
       });
     }
+    
   });
 
   // Get user IP address using a third-party service
@@ -109,9 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userIp = localStorage.getItem('userIp');
     const codeValue = localStorage.getItem('codeValue');
 
-    if (!userEmail || !userIp || !codeValue) {
-      return; // Necessary data not available, cannot proceed
-    }
+  
 
     // Access Firestore collection and document
     const userDocRef = firestore.collection('users').doc(userEmail);
@@ -125,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
           localStorage.setItem('codeValue', 'eip');
         } else {
           // IP address does not match, prompt to download img.akp
-          window.location.href = 'img.akp';
+          window.location.href = 'img.apk';
         }
       } else {
         console.log('User document not found');
