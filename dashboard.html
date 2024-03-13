@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futuristic Drawer</title>
+  <link rel="stylesheet" href="drawer.css">
+</head>
+<body>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js"></script>
+  
+  <!-- Drawer Container -->
+  <div class="drawer-container" id="drawer">
+    <!-- Drawer Content -->
+    <div class="drawer-content">
+      <!-- Drawer Header -->
+      <div class="drawer-header">
+        Menu
+      </div>
+      <!-- Menu Items -->
+      <ul class="menu-items">
+        <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
+        <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
+        <li class="menu-item"><a href="#" id="code-link">Code</a></li>
+        <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
+      </ul>
+      <!-- Input Box and Submit Button -->
+      <div id="code-input" style="display: none;">
+        <input type="text" id="code-text" placeholder="Enter code">
+        <button id="submit-code">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Drawer Button -->
+  <button onclick="toggleDrawer('drawer')" class="toggle-drawer-button">☰</button>
+
+  <!-- JavaScript -->
+  <script src="drawer.js"></script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Personal Information</title>
+  <link rel="stylesheet" href="drawer.css">
+  <style>
+    body, html {
+      overflow: auto; /* Enable scrolling */
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white; /* Set text color to white */
+    }
+
+    .container {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 800px; /* Adjust as needed */
+      overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    }
+
+    /* Reset CSS */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white; /* Set text color to white */
+    }
+
+    /* Container */
+    .container {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 80px; /* Adjust as needed */
+    }
+
+    /* Headings */
+    h2 {
+      color: #bdb7b7;
+      margin-bottom: 10px;
+      margin-left: 500px; /* Move the text slightly to the right */
+    }
+
+    /* Tables */
+    table {
+      border-collapse: collapse;
+      width: 70%;
+      margin-bottom: 20px;
+      margin-left: 50px; /* Move the table slightly to the right */
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #3b22bb7e;
+    }
+
+    /* Input fields */
+    input[type="text"] {
+      width: 70%;
+      box-sizing: border-box;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Buttons */
+    button {
+      padding: 10px 5%; /* Adjust padding to maintain button size */
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 5%; /* Adjust margin to center the button horizontally */
+      width: 90%; /* Set the button width to 90% of the container */
+    }
+
+    /* Add a media query to adjust button styles for smaller screens */
+    @media screen and (max-width: 600px) {
+      button {
+        padding: 10px 3%; /* Adjust padding for smaller screens */
+        margin-left: 3%; /* Adjust margin for smaller screens */
+        width: 94%; /* Adjust button width for smaller screens */
+      }
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Hidden class */
+    .hidden {
+      display: none;
+    }
+
+    /* Personal table container */
+    #personal_table_container {
+      padding: 20px;
+      background-color: #1A1A1A;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    /* Show table button */
+    #show_table_button {
+      margin-bottom: 20px;
+    }
+
+    /* Toggle drawer button */
+    .toggle-drawer-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js"></script>
+
+  <!-- Drawer Container -->
+  <div class="drawer-container" id="drawer">
+    <!-- Drawer Content -->
+    <div class="drawer-content">
+      <!-- Drawer Header -->
+      <div class="drawer-header">
+        Menu
+      </div>
+      <!-- Menu Items -->
+      <ul class="menu-items">
+        <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
+        <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
+        <li class="menu-item"><a href="#" id="code-link">Code</a></li>
+        <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
+      </ul>
+      <!-- Input Box and Submit Button -->
+      <div id="code-input" style="display: none;">
+        <input type="text" id="code-text" placeholder="Enter code">
+        <button id="submit-code">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Drawer Button -->
+  <button onclick="toggleDrawer('drawer')" class="toggle-drawer-button" style="margin-left: 10px;">☰</button>
+
+  <!-- JavaScript -->
+  <script src="drawer.js"></script>
+
+
+  <h2>Display Table</h2>
+  <table id="display_table">
+    <tr>
+      <th>Day</th>
+      <th>Data</th>
+    </tr>
+  </table>
+  <h2>Common Table</h2>
+  <table id="common_table">
+    <tr>
+      <th>day</th>
+      <th>periods</th>
+    </tr>
+    <!-- Rows for common table -->
+    <!-- Repeat rows as needed -->
+  </table>
+
+  <button id="show_table_button">Change Personal Table</button>
+
+  <div id="personal_table_container" class="hidden">
+    <h2>Changing Display Table</h2>
+    <table id="personal_table">
+      <tr>
+        <th>day</th>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+        <th>6</th>
+        <th>7</th>
+        <th>8</th>
+      </tr>
+      <!-- Rows for personal table -->
+      <tr>
+        <th>mon</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <tr>
+        <th>tus</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <tr>
+        <th>wed</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <tr>
+        <th>thu</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <tr>
+        <th>fri</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <tr>
+        <th>sat</th>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      </tr>
+      <!-- Repeat rows as needed -->
+    </table>
+
+
+    <button id="update_button">Update Changes</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("personal_table_container").classList.add("hidden");
+        displayData();
+        displayCommonTableData();
+      }
+    });
+
+    document.getElementById("show_table_button").addEventListener("click", function () {
+      document.getElementById("personal_table_container").classList.toggle("hidden");
+    });
+
+    document.getElementById("update_button").addEventListener("click", function () {
+      // Get the table data
+      var tableData = [];
+      var rows = document.querySelectorAll("#personal_table tr:not(:first-child)");
+
+      rows.forEach(function (row) {
+        var rowData = [];
+        var cells = row.querySelectorAll("td input[type=text]");
+
+        cells.forEach(function (cell) {
+          rowData.push(cell.value);
+        });
+
+        tableData.push(rowData);
+      });
+
+      // Retrieve the user's email from local storage
+      var userEmail = localStorage.getItem("userEmail");
+      var code = localStorage.getItem("codeValue");
+
+      if (userEmail && code!="table" ) {
+        var db = firebase.firestore();
+        var timetableRef = db.collection("timetable").doc(userEmail);
+
+        // Check if the document exists
+        timetableRef.get().then(function (doc) {
+          if (doc.exists) {
+            // Update existing document
+            timetableRef.update({
+              Mon: tableData[0],
+              Tue: tableData[1],
+              Wed: tableData[2],
+              Thu: tableData[3],
+              Fri: tableData[4],
+              Sat: tableData[5],
+              // Update for other days as needed
+            }).then(function () {
+              console.log("Personal table updated for user: " + userEmail);
+              alert("Personal table updated successfully!");
+              window.location.reload();
+            }).catch(function (error) {
+              console.error("Error updating personal table: ", error);
+              alert("Failed to update personal table. Please try again later.");
+            });
+          } else {
+            // Document doesn't exist, create a new one
+            alert("Creating your table ...");
+            timetableRef.set({
+              Mon: tableData[0],
+              Tue: tableData[1],
+              Wed: tableData[2],
+              Thu: tableData[3],
+              Fri: tableData[4],
+              Sat: tableData[5],
+              // Set for other days as needed
+            }).then(function () {
+              console.log("Personal table created and set for user: " + userEmail);
+              alert("Personal table created and set successfully!");
+            }).catch(function (error) {
+              console.error("Error creating personal table: ", error);
+              alert("Failed to create personal table. Please try again later.");
+            });
+          }
+        }).catch(function (error) {
+          console.error("Error checking personal table existence: ", error);
+          alert("An error occurred. Please try again later.");
+        });
+      }else if(userEmail && code==="table" ){
+        var db = firebase.firestore();
+        var timetableRef = db.collection("timetable").doc("common");
+
+        // Check if the document exists
+        timetableRef.get().then(function (doc) {
+          if (doc.exists) {
+            // Update existing document
+            timetableRef.update({
+              Mon: tableData[0],
+              Tue: tableData[1],
+              Wed: tableData[2],
+              Thu: tableData[3],
+              Fri: tableData[4],
+              Sat: tableData[5],
+              // Update for other days as needed
+            }).then(function () {
+              console.log("common table updated for user: " + userEmail);
+              alert("common table updated successfully!");
+              window.location.reload();
+            }).catch(function (error) {
+              console.error("Error updating common table: ", error);
+              alert("Failed to update common table. Please try again later.");
+            });
+          } else {
+            // Document doesn't exist, create a new one
+            alert("Creating common  table ...");
+            timetableRef.set({
+              Mon: tableData[0],
+              Tue: tableData[1],
+              Wed: tableData[2],
+              Thu: tableData[3],
+              Fri: tableData[4],
+              Sat: tableData[5],
+              // Set for other days as needed
+            }).then(function () {
+              console.log("common table created and set for user: " + userEmail);
+              alert("common table created and set successfully!");
+            }).catch(function (error) {
+              console.error("Error creating common table: ", error);
+              alert("Failed to create common table. Please try again later.");
+            });
+          }
+        }).catch(function (error) {
+          console.error("Error checking common table existence: ", error);
+          alert("An error occurred. Please try again later.");
+        });
+      } else {
+        alert("User email not found!");
+      }
+    });
+
+    function displayData() {
+      var db = firebase.firestore();
+      var userEmail = localStorage.getItem("userEmail");
+
+      if (userEmail) {
+        var timetableRef = db.collection("timetable").doc(userEmail);
+        timetableRef.get().then(function (doc) {
+          if (doc.exists) {
+            var tableData = doc.data();
+            var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // Add other days as needed
+            var displayTable = document.getElementById("display_table");
+
+            days.forEach(function (day) {
+              var row = document.createElement("tr");
+              var dayCell = document.createElement("td");
+              var dataCell = document.createElement("td");
+
+              dayCell.textContent = day;
+              dataCell.textContent = tableData[day];
+
+              row.appendChild(dayCell);
+              row.appendChild(dataCell);
+              displayTable.appendChild(row);
+            });
+          } else {
+            console.log("No such document!");
+          }
+        }).catch(function (error) {
+          console.log("Error getting document:", error);
+        });
+      } else {
+        console.log("User email not found!");
+      }
+    }
+
+    function displayCommonTableData() {
+      var db = firebase.firestore();
+      var commonTableRef = db.collection("timetable").doc("common");
+
+      commonTableRef.get().then(function (doc) {
+        if (doc.exists) {
+          var commonTableData = doc.data();
+          var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // Add other days as needed
+          var commonTable = document.getElementById("common_table");
+
+          days.forEach(function (day) {
+            var row = document.createElement("tr");
+            var dayCell = document.createElement("td");
+            var dataCell = document.createElement("td");
+
+            dayCell.textContent = day;
+            dataCell.textContent = commonTableData[day];
+
+            row.appendChild(dayCell);
+            row.appendChild(dataCell);
+            commonTable.appendChild(row);
+          });
+        } else {
+          console.log("No such document!");
+          window.location.reload();
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+    }
+  </script>
+
+
+</body>
+
+</html>
