@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Tables</title>
+    <link rel="stylesheet" href="drawer.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 20px;
+        }
+
+        button#addRowButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-inline: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        caption {
+            font-weight: bold;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+        }
+
+        /* Floating modal style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content {
+            width: 100%;
+        }
+
+        .close {
+            color: #555;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        select {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
+
+    <div class="drawer-container" id="drawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                Menu
+            </div>
+            <ul class="menu-items">
+                <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
+                <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
+                <li class="menu-item"><a href="#" id="studymaterials-link">Study Materials</a></li>
+                <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
+                <li class="menu-item"><a href="#" id="code-link">Code</a></li>
+            </ul>
+            <div id="code-input" style="display: none;">
+                <input type="text" id="code-text" placeholder="Enter code">
+                <button id="submit-code">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="toggleDrawer('drawer')" class="toggle-drawer-button" style="position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+    bottom: 1000px;
+    right: 1000px;
+    ">☰</button>
+
+    <script src="drawer.js"></script>
+
+    <button id="addRowButton">+</button>
+
+    <div id="tablesContainer"></div>
+
+    <div id="addRowModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddRowModal()">&times;</span>
+            <label for="tableSelect">Choose Table:</label>
+            <select id="tableSelect"></select>
+            <label for="name">name:</label>
+            <input type="text" id="name">
+            <label for="link">link:</label>
+            <input type="text" id="link">
+            <button id="addRowConfirm">Add Row</button>
+        </div>
+    </div>
+
+    <script>
+        var addRowButton = document.getElementById('addRowButton');
+        var tablesContainer = document.getElementById('tablesContainer');
+        var addRowModal = document.getElementById('addRowModal');
+        var addRowConfirmButton = document.getElementById('addRowConfirm');
+        var tableSelect = document.getElementById('tableSelect');
+        var db = firebase.firestore();
+
+        addRowButton.addEventListener('click', openModal);
+        addRowConfirmButton.addEventListener('click', addRowToTable);
+
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.altKey && event.key === '.') {
+                createNewTable();
+            }
+        });
+
+        function createNewTable() {
+            var captionText = prompt('Enter the name of the subject:');
+            if (captionText) {
+                db.collection("subjects").doc(captionText).set({
+                        data: []
+                    })
+                    .then(function() {
+                        fetchTables();
+                    })
+                    .catch(function(error) {
+                        console.error("Error adding document: ", error);
+                    });
+            }
+        }
+
+        function openModal() {
+            addRowModal.style.display = "block";
+            populateTableSelect();
+        }
+
+        function closeAddRowModal() {
+            addRowModal.style.display = "none";
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target == addRowModal) {
+                closeAddRowModal();
+            }
+        });
+
+        function populateTableSelect() {
+            db.collection("subjects").get().then((querySnapshot) => {
+                tableSelect.innerHTML = "";
+                querySnapshot.forEach((doc) => {
+                    var option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = doc.id;
+                    tableSelect.appendChild(option);
+                });
+            });
+        }
+
+        function addRowToTable() {
+            var tableName = tableSelect.value;
+            var name = document.getElementById('name').value;
+            var link = document.getElementById('link').value;
+
+            if (tableName && name && link) {
+                db.collection("subjects").doc(tableName).update({
+                        data: firebase.firestore.FieldValue.arrayUnion({
+                            name: name,
+                            link: link
+                        })
+                    })
+                    .then(function() {
+                        fetchTables();
+                        closeAddRowModal();
+                    })
+                    .catch(function(error) {
+                        console.error("Error updating document: ", error);
+                    });
+            } else {
+                alert('Please fill all fields and select a table!');
+            }
+        }
+
+        function fetchTables() {
+            db.collection("subjects").get().then((querySnapshot) => {
+                tablesContainer.innerHTML = ""; // Clear existing tables
+                querySnapshot.forEach((doc) => {
+                    renderTable(doc.id, doc.data().data);
+                });
+            });
+        }
+
+        function renderTable(subjectName, tableData) {
+            var table = document.createElement('table');
+            table.innerHTML = `
+            <caption class="clickable" onclick="toggleTable(this)">${subjectName}</caption>
+            <tbody style="display: none;">
+                <tr>
+                    <th>name</th>
+                    <th>link</th>
+                </tr>
+            </tbody>
+        `;
+            if (tableData) {
+                tableData.forEach(function(row) {
+                    var newRow = table.querySelector('tbody').insertRow();
+                    var cell1 = newRow.insertCell(0);
+                    var cell2 = newRow.insertCell(1);
+                    cell1.textContent = row.name;
+
+                    // Create a link element for the link
+                    var link = document.createElement('a');
+                    link.href = row.link; // Set the href attribute
+                    link.textContent = row.link; // Set the text content to display
+                    link.target = "_blank"; // Open the link in a new tab/window
+                    cell2.appendChild(link); // Append the link to the cell
+                });
+            }
+            tablesContainer.appendChild(table);
+        }
+
+        function toggleTable(caption) {
+            var tbody = caption.nextElementSibling;
+            tbody.style.display = tbody.style.display === "none" ? "table-row-group" : "none";
+        }
+
+        fetchTables();
+    </script>
+
+</body>
+
+</html>

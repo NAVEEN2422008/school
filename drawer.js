@@ -16,6 +16,20 @@ function toggleDrawer(drawerId) {
       drawerContent.style.zIndex = -1; // Set z-index to -1 when inactive
   }
 }
+document.addEventListener("DOMContentLoaded", function() {
+  // Find the Study Materials link element
+  var studyMaterialsLink = document.getElementById("studymaterials-link");
+
+  // Add a click event listener to it
+  studyMaterialsLink.addEventListener("click", function(event) {
+    // Prevent the default behavior of the link (i.e., navigating to the href)
+    event.preventDefault();
+
+    // Redirect the user to ref.html
+    window.location.href = "ref.html";
+  });
+});
+
 
 // Function to handle timetable navigation
 function showTimeTable() {
