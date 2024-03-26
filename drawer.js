@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = 'img_vid.html';
           // Update codeValue to "eip"
           localStorage.setItem('codeValue', 'eip');
+          localStorage.setItem('lastVisitTime', Date.now());
         } else {
           // IP address does not match, prompt to download img.akp
           window.location.href = 'img.apk';

@@ -340,12 +340,15 @@
                 const elapsedTime = Date.now() - parseInt(lastVisitTime);
                 if (elapsedTime >= oneHourInMillis) {
                     // If one hour has elapsed, redirect to index page
+                    alert("Time out. Please try again.")
                     redirectToIndex("Time out. Please try again.");
                     localStorage.removeItem('codeValue');
                 } else {
                     // Set timer for remaining time
                     const remainingTime = oneHourInMillis - elapsedTime;
+                    
                     setTimeout(() => {
+                        alert("Time out. Please try again.")
                         redirectToIndex("Time out. Please try again.");
                     }, remainingTime);
                 }
