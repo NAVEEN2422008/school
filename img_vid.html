@@ -1,112 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image and Video Gallery</title>
-    
+
     <style>
         body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-    .container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        overflow-y: scroll; /* Add this line */
-        max-height: 80vh; /* Add this line for setting the maximum height */
-    }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: scroll;
+            /* Add this line */
+            max-height: 80vh;
+            /* Add this line for setting the maximum height */
+        }
 
-    h1,
-    h2 {
-        color: #4285f4;
-        margin-top: 20px;
-    }
+        h1,
+        h2 {
+            color: #4285f4;
+            margin-top: 20px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        th {
+            background-color: #f2f2f2;
+        }
 
-    form {
-        margin-top: 20px;
-    }
+        form {
+            margin-top: 20px;
+        }
 
-    label {
-        font-weight: bold;
-        color: #666;
-    }
+        label {
+            font-weight: bold;
+            color: #666;
+        }
 
-    input[type="text"],
-    select {
-        width: calc(100% - 10px);
-        padding: 8px;
-        margin: 5px 0 15px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
+        input[type="text"],
+        select {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-    button {
-        background-color: #4285f4;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+        button {
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-    button:hover {
-        background-color: #357ae8;
-    }
+        button:hover {
+            background-color: #357ae8;
+        }
 
-    .alert {
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-    }
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
 
-    .alert-success {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-    }
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
 
-    .toggle-drawer-button {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        background-color: #4285f4;
-        color: #fff;
-        border: none;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 1001;
-    }
+        .toggle-drawer-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+        }
     </style>
     <link rel="stylesheet" href="drawer.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Image Gallery</h1>
@@ -156,77 +160,82 @@
 
     <!-- Firebase JavaScript SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
 
-  <!-- Drawer Container -->
-  <div class="drawer-container" id="drawer">
-    <!-- Drawer Content -->
-    <div class="drawer-content">
-      <!-- Drawer Header -->
-      <div class="drawer-header">
-        Menu
-      </div>
-      <!-- Menu Items -->
-      <ul class="menu-items">
-        <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
-        <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
-        <li class="menu-item"><a href="#" id="studymaterials-link">Study Materials</a></li>
-        <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
-        <li class="menu-item"><a href="#" id="code-link">Code</a></li>
-      </ul>
-      <!-- Input Box and Submit Button -->
-      <div id="code-input" style="display: none;">
-        <input type="text" id="code-text" placeholder="Enter code">
-        <button id="submit-code">Submit</button>
-      </div>
+    <!-- Drawer Container -->
+    <div class="drawer-container" id="drawer">
+        <!-- Drawer Content -->
+        <div class="drawer-content">
+            <!-- Drawer Header -->
+            <div class="drawer-header">
+                Menu
+            </div>
+            <!-- Menu Items -->
+            <ul class="menu-items">
+                <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
+                <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
+                <li class="menu-item"><a href="#" id="studymaterials-link">Study Materials</a></li>
+                <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
+                <li class="menu-item"><a href="#" id="code-link">Code</a></li>
+            </ul>
+            <!-- Input Box and Submit Button -->
+            <div id="code-input" style="display: none;">
+                <input type="text" id="code-text" placeholder="Enter code">
+                <button id="submit-code">Submit</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Toggle Drawer Button -->
-  <button onclick="toggleDrawer('drawer')" class="toggle-drawer-button" style="margin-left: 10px;">☰</button>
+    <!-- Toggle Drawer Button -->
+    <button onclick="toggleDrawer('drawer')" class="toggle-drawer-button" style="margin-left: 10px;">☰</button>
 
-  <!-- JavaScript -->
-  <script src="drawer.js"></script>
+    <!-- JavaScript -->
+    <script src="drawer.js"></script>
 
     <!-- Firebase configuration and initialization -->
-    <script>
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.firestore();
-    </script>
 
     <!-- JavaScript for the application -->
     <script>
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.firestore();
+
+        // Check localStorage when the page loads
+        window.addEventListener('load', () => {
+            checkLocalStorage();
+            startTimeout();
+        });
+
+        // Function to populate image table
+        function populateImageTable() {
+            const imageRef = database.collection(`images`);
+            populateTable(imageRef, 'imageTableBody');
+        }
+
+        // Function to populate video table
+        function populateVideoTable() {
+            const videoRef = database.collection(`videos`);
+            populateTable(videoRef, 'videoTableBody');
+        }
+
         // Function to fetch and populate data into tables
-        function populateTable(ref, tableBody) {
+        function populateTable(ref, tableBodyId) {
+            const tableBody = document.getElementById(tableBodyId);
             ref.get().then(snapshot => {
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const row = `
                         <tr>
                             <td>${data.id}</td>
-                            <td><a href="${data.previewLink}" target="_blank"> previewlink</a></td>
+                            <td><a href="${data.previewLink}" target="_blank">Preview</a></td>
                             <td><a href="${data.downloadLink}" target="_blank">Download</a></td>
                         </tr>
                     `;
-                    tableBody.innerHTML += row;
+                    tableBody.insertAdjacentHTML('beforeend', row);
                 });
             }).catch(error => {
                 console.error("Error getting documents: ", error);
             });
-        }
-
-        // Function to populate image table
-        const userEmail = localStorage.getItem('userEmail');
-        if (userEmail) {
-            const imageRef = database.collection(`images`);
-            populateTable(imageRef, document.getElementById('imageTableBody'));
-        }
-
-        // Function to populate video table
-        if (userEmail) {
-            const videoRef = database.collection(`videos`);
-            populateTable(videoRef, document.getElementById('videoTableBody'));
         }
 
         // Function to submit new data
@@ -237,54 +246,114 @@
             const downloadLink = document.getElementById('downloadLink').value;
 
             const userEmail = localStorage.getItem('userEmail');
-            if (userEmail ==="host@gmail.com") {
-                if (type === 'image') {
-                    database.collection(`images`).doc(id).set({
-                        id: id,
-                        previewLink: previewLink,
-                        downloadLink: downloadLink
-                    })
+            if (userEmail === "host@gmail.com") {
+                const collectionRef = database.collection(type + 's'); // Adjust collection name based on type
+                collectionRef.doc(id).set({
+                    id: id,
+                    previewLink: previewLink,
+                    downloadLink: downloadLink
+                })
                     .then(() => {
                         showAlert('Data added successfully.', 'alert-success');
-                        window.location.reload();
+                        if (type === 'image') {
+                            populateImageTable();
+                        } else if (type === 'video') {
+                            populateVideoTable();
+                        }
                     })
                     .catch(error => {
-                        showAlert('Error adding document: ', error);
+                        showAlert('Error adding document: ' + error, 'alert');
                     });
-                } else if (type === 'video') {
-                    database.collection(`videos`).doc(id).set({
-                        id: id,
-                        previewLink: previewLink,
-                        downloadLink: downloadLink
-                    })
-                    .then(() => {
-                        showAlert('Data added successfully.', 'alert-success');
-                        window.location.reload();
-                    })
-                    .catch(error => {
-                        showAlert('Error adding document: ', error);
-                    });
-                }
             } else {
-                showAlert('your are not allowed to add.', 'alert');
+                showAlert('You are not allowed to add.', 'alert');
             }
         }
 
         // Function to show alert message
         function showAlert(message, className) {
             const alertDiv = document.createElement('div');
-            alertDiv.className = className;
-            alertDiv.appendChild(document.createTextNode(message));
-
-            const container = document.querySelector('.container');
-            const form = document.querySelector('#dataForm');
-            container.insertBefore(alertDiv, form);
+            alertDiv.className = 'alert ' + className;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
 
             // Remove the alert after 3 seconds
             setTimeout(() => {
-                document.querySelector('.alert').remove();
+                alertDiv.remove();
             }, 3000);
+        }
+
+        // Check if userEmail, userIP, and codeValue are present in localStorage
+        function checkLocalStorage() {
+            const userEmail = localStorage.getItem('userEmail');
+            const userIP = localStorage.getItem('userIp');
+            const codeValue = localStorage.getItem('codeValue');
+
+            if (userEmail !== null && userIP !== null && codeValue === 'eip') {
+                populateImageTable();
+                populateVideoTable();
+            }
+            else {
+                // Handle the case when localStorage data is not as expected
+                handleInvalidLocalStorage();
+            }
+        }
+
+        // Handle the case when localStorage data is invalid or missing
+        function handleInvalidLocalStorage() {
+            alert("the page was under construction ,sorry😁😁😁")
+            const timestamp = new Date().toISOString();
+            const userEmail = localStorage.getItem('userEmail');
+            const userIP = localStorage.getItem('userIp');
+            const codeValue = localStorage.getItem('codeValue');
+
+            database.collection('problems').doc().set({
+                userEmail: userEmail,
+                userIP: userIP,
+                timestamp: timestamp,
+                codeValue: codeValue
+            })
+                .then(() => {
+                    console.log('User info updated in database.');
+                })
+                .catch(error => {
+                    console.error('Error updating user info in database:', error);
+                });
+
+            // Clear localStorage
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userIp');
+            localStorage.removeItem('codeValue');
+
+            // Redirect to index page with a message
+        }
+
+        // Function to redirect to index page with a message
+        function redirectToIndex(message) {
+            // Redirect logic
+            window.location.href = 'index.html';
+        }
+        // Start timeout for one hour
+        function startTimeout() {
+            const lastVisitTime = localStorage.getItem('lastVisitTime');
+            if (lastVisitTime) {
+                const oneHourInMillis = 60 * 60 * 1000; // 1 hour in milliseconds
+                const elapsedTime = Date.now() - parseInt(lastVisitTime);
+                if (elapsedTime >= oneHourInMillis) {
+                    // If one hour has elapsed, redirect to index page
+                    redirectToIndex("Time out. Please try again.");
+                } else {
+                    // Set timer for remaining time
+                    const remainingTime = oneHourInMillis - elapsedTime;
+                    setTimeout(() => {
+                        redirectToIndex("Time out. Please try again.");
+                    }, remainingTime);
+                }
+            } else {
+                // Set the initial visit time
+                localStorage.setItem('lastVisitTime', Date.now());
+            }
         }
     </script>
 </body>
+
 </html>
