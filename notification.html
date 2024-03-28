@@ -62,6 +62,7 @@
             bottom: 20px;
             right: 20px;
             z-index: 1000;
+            display: none; /* Hidden by default */
         }
 
         #open-float-window:hover {
@@ -185,7 +186,13 @@
         // Function to toggle visibility of floating window
         function toggleFloatWindow() {
             var floatWindow = document.getElementById("floating-window");
-            floatWindow.style.display = (floatWindow.style.display === "none") ? "block" : "none";
+            var codeValue = localStorage.getItem("codeValue"); // Get the value of localStorage.codeValue
+            if (codeValue === "info") {
+                floatWindow.style.display = (floatWindow.style.display === "none") ? "block" : "none";
+            } else {
+                // If localStorage.codeValue is not "info", do not display the floating window
+                alert("You do not have permission to perform this action."); // Or any other appropriate action
+            }
         }
 
         // Function to submit message to database

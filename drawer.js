@@ -11,7 +11,7 @@ function toggleDrawer(drawerId) {
   // Adjust z-index of .drawer-content
   const drawerContent = document.querySelector('.drawer-container');
   if (drawer.classList.contains('active')) {
-      drawerContent.style.zIndex = 0;
+      drawerContent.style.zIndex = 1000;
   } else {
       drawerContent.style.zIndex = -1; // Set z-index to -1 when inactive
   }
