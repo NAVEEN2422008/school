@@ -29,6 +29,21 @@ document.addEventListener("DOMContentLoaded", function() {
     window.location.href = "ref.html";
   });
 });
+// JavaScript for handling the click event of the "Notification" link
+document.addEventListener('DOMContentLoaded', function() {
+  // Find the "Notification" link element
+  var notificationLink = document.getElementById('notification-link');
+
+  // Add click event listener to the "Notification" link
+  notificationLink.addEventListener('click', function(event) {
+      // Prevent the default behavior of the link
+      event.preventDefault();
+
+      // Navigate the user to the "notification.html" page
+      window.location.href = 'notification.html';
+  });
+});
+
 
 
 // Function to handle timetable navigation
