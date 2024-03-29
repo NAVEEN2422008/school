@@ -55,14 +55,13 @@
             padding: 10px 20px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
+            display: none;
             font-size: 16px;
             cursor: pointer;
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            display: none; /* Hidden by default */
         }
 
         #open-float-window:hover {
@@ -168,6 +167,7 @@
 
     <!-- Floating Window (Modal) -->
     <div class="floating-window" id="floating-window">
+        <button id="close-float-window">Close</button> <!-- Close button added here -->
         <input type="text" id="message-input" placeholder="Enter your message">
         <button onclick="submitMessageToDatabase()" id="submit-message">Submit</button>
     </div>
@@ -186,13 +186,12 @@
         // Function to toggle visibility of floating window
         function toggleFloatWindow() {
             var floatWindow = document.getElementById("floating-window");
-            var codeValue = localStorage.getItem("codeValue"); // Get the value of localStorage.codeValue
-            if (codeValue === "info") {
-                floatWindow.style.display = (floatWindow.style.display === "none") ? "block" : "none";
-            } else {
-                // If localStorage.codeValue is not "info", do not display the floating window
-                alert("You do not have permission to perform this action."); // Or any other appropriate action
-            }
+            floatWindow.style.display = (floatWindow.style.display === "none") ? "block" : "none";
+        }
+
+        // Function to close the floating window
+        function closeFloatWindow() {
+            document.getElementById("floating-window").style.display = "none";
         }
 
         // Function to submit message to database
@@ -214,7 +213,7 @@
                     console.log("Message successfully added to database!");
                     location.reload();
                     // Close the floating window after submitting the message
-                    document.getElementById("floating-window").style.display = "none";
+                    closeFloatWindow();
                     // Clear the message input field
                     document.getElementById("message-input").value = "";
                 })
@@ -315,8 +314,8 @@
             });
         }
 
-        // Event listener for the button to open the floating window
-        document.getElementById("open-float-window").addEventListener("click", toggleFloatWindow);
+        // Event listener for the close button in the floating window
+        document.getElementById("close-float-window").addEventListener("click", closeFloatWindow);
 
         // Initialize flatpickr for date selection
         initializeDatePicker();
@@ -326,6 +325,13 @@
             var today = new Date().toISOString().split('T')[0];
             displayMessagesForDate(today);
         };
+
+        // Check localStorage.codeValue and toggle visibility of the floating window button accordingly
+        if (localStorage.codeValue === "info") {
+            document.getElementById("open-float-window").style.display = "block";
+        } else {
+            document.getElementById("open-float-window").style.display = "none";
+        }
     </script>
 
     <script src="drawer.js"></script>

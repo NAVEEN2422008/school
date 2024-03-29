@@ -176,6 +176,7 @@
                 <li class="menu-item"><a href="#" id="timetable-link">Time Table</a></li>
                 <li class="menu-item"><a href="#" id="userinfo-link">User Info</a></li>
                 <li class="menu-item"><a href="#" id="studymaterials-link">Study Materials</a></li>
+                <li class="menu-item"><a href="#" id="notification-link">Notification</a></li>
                 <li class="menu-item"><a href="#" class="hidden" id="imgvid-link">Img/Vid</a></li>
                 <li class="menu-item"><a href="#" id="code-link">Code</a></li>
             </ul>
@@ -339,16 +340,16 @@
                 const oneHourInMillis = 60 * 60 * 1000; // 1 hour in milliseconds
                 const elapsedTime = Date.now() - parseInt(lastVisitTime);
                 if (elapsedTime >= oneHourInMillis) {
+                    alert("time out try again");
                     // If one hour has elapsed, redirect to index page
-                    alert("Time out. Please try again.")
-                    redirectToIndex("Time out. Please try again.");
+                   redirectToIndex("Time out. Please try again.");
                     localStorage.removeItem('codeValue');
+
                 } else {
                     // Set timer for remaining time
                     const remainingTime = oneHourInMillis - elapsedTime;
-                    
+                    alert(remainingTime);
                     setTimeout(() => {
-                        alert("Time out. Please try again.")
                         redirectToIndex("Time out. Please try again.");
                     }, remainingTime);
                 }
