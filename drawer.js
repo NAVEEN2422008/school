@@ -11,7 +11,8 @@ function toggleDrawer(drawerId) {
   // Adjust z-index of .drawer-content
   const drawerContent = document.querySelector('.drawer-container');
   if (drawer.classList.contains('active')) {
-      drawerContent.style.zIndex = 0;
+      drawerContent.style.zIndex = 9998;
+
   } else {
       drawerContent.style.zIndex = -1; // Set z-index to -1 when inactive
   }
@@ -97,7 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.reload();
     }
     // You can also hide the input box and submit button after submission
-    window.location.reload();
+    if (codeValue === 'info') {
+      window.location.reload();
+  }
 
     codeInput.style.display = 'none';
 
